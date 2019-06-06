@@ -13,6 +13,7 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => 255]) ?>
+    <?= $form->field($model, 'max_day')->textInput(['type' => 'number']); ?>
     <?= $form->field($model, 'loop')->checkbox(['checked ' => '']); ?>
 
     <div class="form-group">
