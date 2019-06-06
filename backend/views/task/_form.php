@@ -11,8 +11,8 @@ use yii\widgets\ActiveForm;
 <div class="category-form">
 
     <?php $form = ActiveForm::begin(); ?>
-
-    <?= $form->field($model, 'title')->textInput(['maxlength' => 255]) ?>
+    <?= $form->field($model, 'title')->textInput(['maxlength' => 255]); ?>
+    <?= $form->field($model, 'min_day')->textInput(['type' => 'number']); ?>
     <?= $form->field($model, 'max_day')->textInput(['type' => 'number']); ?>
     <?= $form->field($model, 'loop')->checkbox(['checked ' => '']); ?>
 

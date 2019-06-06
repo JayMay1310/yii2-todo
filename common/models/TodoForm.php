@@ -33,7 +33,7 @@ class TodoForm extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['category_id', 'status', 'count', 'done', 'max_day'], 'integer'],
+            [['category_id', 'status', 'count', 'done', 'max_day', 'min_day'], 'integer'],
             [['description'], 'string'],
             [['last_update'], 'safe'],
             [['title'], 'string', 'max' => 255],
@@ -51,6 +51,7 @@ class TodoForm extends \yii\db\ActiveRecord
             'id' => 'ID',
             'category_id' => 'Category ID',
             'max_day' => 'Max Day',
+            'min_day' => 'Min Day', 
             'title' => 'Title',
             'status' => 'Status',
             'description' => 'Description',

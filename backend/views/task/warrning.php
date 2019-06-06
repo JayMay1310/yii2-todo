@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Categories', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="category-view">
-    <h1>Задачи требующие решения (>10 дней)</h1>
+    <h1>Задачи требующие решения min day </h1>
 </div>
 
 <?=Html::beginForm(['task/done'],'post');?>
@@ -23,8 +23,8 @@ $this->params['breadcrumbs'][] = $this->title;
     'options' => ['class' => 'table-responsive'],
     'tableOptions' => ['class' => 'table table-condensed'],
     'dataProvider' => $dataProvider,
-    'rowOptions'=>function($model){
-        $red_time = strtotime('-15 day', time());
+    'rowOptions'=>function($model){        
+        $red_time = strtotime('-10 day', time());
         $red_delta = date('Y-m-d H:i:s', $red_time);
 
         if ($model->last_update <= $red_delta) {
