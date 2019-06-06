@@ -23,8 +23,9 @@ $this->params['breadcrumbs'][] = $this->title;
     'options' => ['class' => 'table-responsive'],
     'tableOptions' => ['class' => 'table table-condensed'],
     'dataProvider' => $dataProvider,
-    'rowOptions'=>function($model){        
-        $red_time = strtotime('-10 day', time());
+    'rowOptions'=>function($model){
+        $max_day = '-' . $model->max_day . ' day';        
+        $red_time = strtotime($min_day, time());
         $red_delta = date('Y-m-d H:i:s', $red_time);
 
         if ($model->last_update <= $red_delta) {
