@@ -9,8 +9,6 @@ $this->title = $model->title;
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="category-index">
-
-
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'rowOptions'=>function($data){
@@ -26,5 +24,4 @@ $this->params['breadcrumbs'][] = $this->title;
             'title', 'max_count', 'work', 
         ],
     ]); ?>
-
 </div>

@@ -71,11 +71,11 @@ class GlobaltaskController extends \yii\web\Controller
         $task4 = TodoForm::findOne((int)$list_task->id4);
         $task5 = TodoForm::findOne((int)$list_task->id5);
 
-        $list_task->title1 = $task1->title;
-        $list_task->title2 = $task2->title;
-        $list_task->title3 = $task3->title;
-        $list_task->title4 = $task4->title;
-        $list_task->title5 = $task5->title;
+        $list_task->title1 = $task1->title ?? 'default';
+        $list_task->title2 = $task2->title ?? 'default';
+        $list_task->title3 = $task3->title ?? 'default';
+        $list_task->title4 = $task4->title ?? 'default';
+        $list_task->title5 = $task5->title ?? 'default';
 
         $result = [];
         array_push($result, array('title'=>$list_task->title1, 'max_count'=>$list_task->input1, 'work' => $list_task->work1));

@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?=Html::beginForm(['task/done'],'post');?>
 
-<?=Html::dropDownList('action','',['Done'=>'Выполнил', 'Delete'=>'Удалить'],['class'=>'dropdown',])?>
+<?=Html::dropDownList('action','',['Done'=>'Выполнил', 'Delete'=>'Удалить'],['class'=>'dropdown',]) ?>
 
 <?=GridView::widget([
     'options' => ['class' => 'table-responsive'],
