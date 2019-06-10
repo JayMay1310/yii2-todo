@@ -24,8 +24,16 @@ $this->params['breadcrumbs'][] = $this->title;
     'tableOptions' => ['class' => 'table table-condensed'],
     'dataProvider' => $dataProvider,
     'rowOptions'=>function($model){
-        $max_day = '-' . $model->max_day . ' day';        
-        $red_time = strtotime($min_day, time());
+        if (isset($model->max_day))
+        {
+            $max_day = '-' . $model->max_day . ' day'; 
+            $red_time = strtotime($max_day, time());
+        }
+        else
+        { 
+            $red_time = strtotime('-15 day', time());
+        } 
+
         $red_delta = date('Y-m-d H:i:s', $red_time);
 
         if ($model->last_update <= $red_delta) {
