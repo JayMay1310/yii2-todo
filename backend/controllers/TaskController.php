@@ -262,6 +262,10 @@ class TaskController extends Controller
         
         return $this->render('statistiс', ['dataProvider' => $provider,]);
     }
+    public function actionVuetest()
+    {
+        return $this->render('vuetest');
+    }
 
     public function actionUpdate($id)
     {
