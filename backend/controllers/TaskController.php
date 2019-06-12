@@ -92,63 +92,79 @@ class TaskController extends Controller
                         $task4 = TodoForm::findOne((int)$list_task->id4);
                         $task5 = TodoForm::findOne((int)$list_task->id5);
 
-                        if ($task1->title === $newModel->title)
+
+                        if (!is_null($task1))
                         {
-                            if ($list_task->work1 < (int)$list_task->input1)
+                            if ($task1->title === $newModel->title)
                             {
-                                $list_task->work1 += 1;
-                                $new_json = json_encode($list_task);
-                                $value->json_task = $new_json;
-                                $value->save(false);
-                                break;
+                                if ($list_task->work1 < (int)$list_task->input1)
+                                {
+                                    $list_task->work1 += 1;
+                                    $new_json = json_encode($list_task);
+                                    $value->json_task = $new_json;
+                                    $value->save(false);
+                                    break;
+                                }
                             }
                         }
-                        if ($task2->title === $newModel->title)
+                        if (!is_null($task2))
                         {
-                            if ($list_task->work2 < (int)$list_task->input2)
+                            if ($task2->title === $newModel->title)
                             {
-                                $list_task->work2 += 1;
-                                $new_json = json_encode($list_task);
-                                $value->json_task = $new_json;
-                                $value->save(false);
-                                break;
+                                if ($list_task->work2 < (int)$list_task->input2)
+                                {
+                                    $list_task->work2 += 1;
+                                    $new_json = json_encode($list_task);
+                                    $value->json_task = $new_json;
+                                    $value->save(false);
+                                    break;
+                                }
                             }
                         }
-                        if ($task3->title === $newModel->title)
+
+                        if (!is_null($task3))
                         {
-                            if ($list_task->work3 < (int)$list_task->input3)
+                            if ($task3->title === $newModel->title)
                             {
-                                $list_task->work3 += 1;
-                                $new_json = json_encode($list_task);
-                                $value->json_task = $new_json;
-                                $value->save(false);
-                                break;
+                                if ($list_task->work3 < (int)$list_task->input3)
+                                {
+                                    $list_task->work3 += 1;
+                                    $new_json = json_encode($list_task);
+                                    $value->json_task = $new_json;
+                                    $value->save(false);
+                                    break;
+                                }
                             }
                         }
-                        if ($task4->title === $newModel->title)
+
+                        if (!is_null($task4))
                         {
-                            if ($list_task->work4 < (int)$list_task->input4)
+                            if ($task4->title === $newModel->title)
                             {
-                                $list_task->work4 += 1;
-                                $new_json = json_encode($list_task);
-                                $value->json_task = $new_json;
-                                $value->save(false);
-                                break;
+                                if ($list_task->work4 < (int)$list_task->input4)
+                                {
+                                    $list_task->work4 += 1;
+                                    $new_json = json_encode($list_task);
+                                    $value->json_task = $new_json;
+                                    $value->save(false);
+                                    break;
+                                }
                             }
                         }
-                        if ($task5->title === $newModel->title)
+                        if (!is_null($task5))
                         {
-                            if ($list_task->work5 < (int)$list_task->input5)
+                            if ($task5->title === $newModel->title)
                             {
-                                $list_task->work5 += 1;
-                                $new_json = json_encode($list_task);
-                                $value->json_task = $new_json;
-                                $value->save(false);
-                                break;
+                                if ($list_task->work5 < (int)$list_task->input5)
+                                {
+                                    $list_task->work5 += 1;
+                                    $new_json = json_encode($list_task);
+                                    $value->json_task = $new_json;
+                                    $value->save(false);
+                                    break;
+                                }
                             }
-                        }
-                          
-                        
+                        }                        
                     }
                 }
                 else 
