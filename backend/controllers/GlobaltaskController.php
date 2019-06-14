@@ -61,6 +61,34 @@ class GlobaltaskController extends \yii\web\Controller
         }
     }
 
+    public function actionAll()
+    {
+        $query = TodoForm::find()->where(['=', 'done', '0']);
+
+        $provider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 100,
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'last_update' => SORT_ASC,
+                ]
+            ],
+        ]);
+
+        return $this->render('all', ['dataProvider' => $provider,]);
+    }
+
+    public function actionZeroing($id)
+    {
+        $model = $this->findToDoModel($id);
+        $model->max_bonus = 0; 
+        $model->save(false);
+
+        return $this->redirect(['all']); 
+    }
+
     public function actionView($id = '')
     {
         $model = GlobalTask::findOne((int)$id);
@@ -106,6 +134,15 @@ class GlobaltaskController extends \yii\web\Controller
     protected function findModel($id)
     {
         if (($model = GlobalTask::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+    protected function findToDoModel($id)
+    {
+        if (($model = TodoForm::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

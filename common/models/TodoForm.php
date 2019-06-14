@@ -18,7 +18,12 @@ use Yii;
  */
 class TodoForm extends \yii\db\ActiveRecord
 {
-    
+    public function init() {
+        parent::init();
+        if (is_null($this->max_bonus)) {
+            $this->max_bonus = 0;
+        }
+    }
     /**
      * @inheritdoc
      */
@@ -33,7 +38,7 @@ class TodoForm extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['category_id', 'status', 'count', 'done', 'max_day', 'min_day'], 'integer'],
+            [['category_id', 'status', 'count', 'done', 'max_day', 'min_day', 'max_bonus'], 'integer'],
             [['description'], 'string'],
             [['last_update'], 'safe'],
             [['title'], 'string', 'max' => 255],
@@ -59,6 +64,7 @@ class TodoForm extends \yii\db\ActiveRecord
             'loop' => 'Loop',
             'count' => 'Count',
             'done' => 'Done',
+            'max_bonus' => 'Count Bonus',
         ];
     }
 

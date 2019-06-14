@@ -45,7 +45,8 @@ AppAsset::register($this);
         $menuItems[] = ['label' => 'Смотреть задачи', 'url' => ['/category/index']];
         $menuItems[] = ['label' => 'Добавить категорию', 'url' => ['/category/create']];
         $menuItems[] = ['label' => 'Добавить задачу', 'url' => ['/task/createtask']];
-        $menuItems[] = ['label' => 'Глобальные задачи', 'url' => ['/globaltask/index']];
+        //$menuItems[] = ['label' => 'Глобальные задачи', 'url' => ['/globaltask/index']];
+        $menuItems[] = ['label' => 'Глобальные задачи', 'url' => ['/globaltask/all']];
         $menuItems[] = ['label' => 'Warrning', 'url' => ['/task/warrningtask']];
         $menuItems[] = ['label' => 'Статистика', 'url' => ['/task/statistic']];
         $menuItems[] = '<li>'

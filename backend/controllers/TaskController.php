@@ -78,6 +78,7 @@ class TaskController extends Controller
                     $newModel->loop = 1;
                     $newModel->last_update = $model->last_update;
                     $newModel->done = 0;
+                    $newModel->max_bonus = $model->max_bonus + 1;
                     $newModel->category_id = $category->id;
                     $newModel->save(false);
 
