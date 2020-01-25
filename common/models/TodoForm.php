@@ -39,7 +39,7 @@ class TodoForm extends \yii\db\ActiveRecord
     {
         return [
             [['category_id', 'status', 'count', 'done', 'max_day', 'min_day', 'max_bonus'], 'integer'],
-            [['description'], 'string'],
+            [['description', 'aim_several_average'], 'string'],
             [['last_update'], 'safe'],
             [['title'], 'string', 'max' => 255],
             [['loop'], 'string', 'max' => 1],

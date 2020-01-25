@@ -7,6 +7,8 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\LoginForm;
 use backend\models\SignupForm;
+use backend\models\Countsmoking;
+use \DateTime;
 
 /**
  * Site controller
@@ -125,5 +127,37 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
+    public function actionAddNoForm()
+    {
+        $model = new Countsmoking();
+        $today_day = date('Y-m-d');
 
+        $last_element = Countsmoking::find()->where(['between', 'data', $today_day . " 00:00:01", $today_day . " 23:59:59" ])->orderBy(['data' => SORT_DESC])->one();
+        if ($last_element != null)
+        {
+            $latest_date_time = strtotime($last_element->data);
+            $latest_date_time = date('Y-m-d H:i:s', $latest_date_time);
+            $datetime1 = new DateTime($latest_date_time);
+
+            $interval = (int)$datetime1->diff(new DateTime())->format("%h");  
+            
+            $model->data = date('Y-m-d H:i:s'); 
+            if ($interval < 2)
+            {
+                $model->count = $last_element->count + 1;
+            }
+            else
+            {
+                $model->count = $last_element->count;
+            }            
+        }
+        else
+        {
+            $model->data = date('Y-m-d H:i:s'); 
+            $model->count = 1;
+        }
+        $model->save(false);
+
+        return $this->redirect(['/category/index']);
+    }
 }

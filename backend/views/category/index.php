@@ -15,6 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Create Category', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
+    <p class="card-text">Последняя выкуренная:  <b><?= $interval_smoking; ?></b></p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,

@@ -9,6 +9,7 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use common\widgets\Alert;
+use yii\widgets\ActiveForm;
 
 AppAsset::register($this);
 ?>
@@ -73,12 +74,16 @@ AppAsset::register($this);
         <?= $content ?>
     </div>
 </div>
-
 <footer class="footer">
     <div class="container">
         <p class="pull-left">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
-
         <p class="pull-right"><?= Yii::powered() ?></p>
+
+        <?php $form = ActiveForm::begin(['action' =>['site/add-no-form'], 'method' => 'post',]); ?>
+            <?= Html::csrfMetaTags() ?>
+            <?= Html::submitButton('+1 smoking', ['class' => 'btn btn-primary' ]) ?>
+        <?php ActiveForm::end(); ?>
+
     </div>
 </footer>
 

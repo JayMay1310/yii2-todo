@@ -79,6 +79,7 @@ class TaskController extends Controller
                     $newModel->last_update = $model->last_update;
                     $newModel->done = 0;
                     $newModel->max_bonus = $model->max_bonus + 1;
+                    $newModel->aim_several_average = $model->aim_several_average;
                     $newModel->category_id = $category->id;
                     $newModel->save(false);
 
@@ -289,7 +290,7 @@ class TaskController extends Controller
         $categories = Category::find()->all();
         $model = $this->findModel($id);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['update', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,

@@ -64,6 +64,20 @@ $this->params['breadcrumbs'][] = $this->title;
              } 
        ],
        [
+            'label' => 'Aim Several Average',
+            'value' => function ($model) {
+                if ($model->aim_several_average == null)
+                {
+                    return "0.3";  
+                }
+                else
+                {
+                  return $model->aim_several_average;
+                }
+            }      
+       ],
+       
+       [
         'class' => 'yii\grid\ActionColumn',
         'template' => '{update_task}',
         'buttons' => [
