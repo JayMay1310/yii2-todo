@@ -2,6 +2,7 @@
 
 namespace backend\assets;
 
+use Yii;
 use yii\web\AssetBundle;
 
 /**
@@ -18,6 +19,18 @@ class AppAsset extends AssetBundle
     ];
     public $depends = [
         'yii\web\YiiAsset',
-        'yii\bootstrap\BootstrapAsset',
+        //'yii\bootstrap\BootstrapAsset',
     ];
+    public function init()
+    {
+        parent::init();
+
+        $actualRoute = Yii::$app->request->url;
+        $this->depends[] = 'yii\bootstrap4\BootstrapAsset';
+
+        $this->publishOptions['beforeCopy'] = function ($from, $to) {
+            $dirname = basename(dirname($from));
+            return $dirname === 'fonts' || $dirname === 'css';
+        };
+    }
 }

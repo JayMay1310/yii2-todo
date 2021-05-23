@@ -15,6 +15,7 @@ class m190103_192047_create_todo_table extends Migration
             // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
+
         $this->createTable('{{%category}}', [
             'id' => Schema::TYPE_PK,
             'parent_id' => Schema::TYPE_INTEGER,
@@ -31,12 +32,12 @@ class m190103_192047_create_todo_table extends Migration
             'category_id' => Schema::TYPE_INTEGER,
             'title' => Schema::TYPE_STRING,
             'status' => Schema::TYPE_INTEGER,
+            'average' => Schema::TYPE_FLOAT,
             'description' => Schema::TYPE_TEXT,      
             'last_update' => Schema::TYPE_DATETIME,
             'loop' => Schema::TYPE_BOOLEAN,
             'count' => Schema::TYPE_INTEGER,
             'done' => Schema::TYPE_INTEGER,
-
         ], $tableOptions);
 
         //$this->addColumn('todolist', 'global_task_id', $this->integer());

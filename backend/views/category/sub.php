@@ -18,21 +18,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Create Category', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-    <p class="card-text">Последняя выкуренная: <b><?= $interval_smoking; ?></b></p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
         'rowOptions'   => function ($model, $index, $widget, $grid){
-            if ($model->parent_id != 0 || $model->parent_id != null)
-            {
-                return ['style' => 'visibility:collapse;'];
-            }
-            else 
-            {
-                return ['style' => 'visibility:visible;'];
-            }
-            
+      
         },
         'columns' => [
             'id', 
@@ -41,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) {
                     if ($model->parent_id == 0 || $model->parent_id == null)
                     {
-                        return Html::a($model->title, ['category/sub-category', 'parent_id' => $model->id, []]);
+                        return Html::a($model->title, ['category/sub-category', 'parent_id' => $model->parent_id]);
                     }
                     else
                     {
@@ -74,22 +64,4 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
 
-</div>
-<div class="container">
-    <div class="row">
-        <div class="col-sm-4">
-            <h4 class="text-center">One Day</h4>
-        </div>
-        <div class="col-sm-4">
-            <h4 class="text-center">One Month</h4>
-        </div>
-        <div class="col-sm-4">
-            <h4 class="text-center">Three Month</h4>
-        </div>
-    </div>
-    <div class="row">
-        <?= $this->render('_one_day_pie', ['pie_data' => $pie_data_day]); ?>
-        <?= $this->render('_one_month_pie', ['pie_data' => $pie_data_one]); ?>
-        <?= $this->render('_three_month_pie', ['pie_data' => $pie_data_three]); ?>
-    </div>
 </div>

@@ -1,5 +1,7 @@
 <?php
+
 namespace backend\controllers;
+
 use Yii;
 use yii\data\ActiveDataProvider;
 use common\models\Category;
@@ -15,33 +17,38 @@ use yii\db\Expression;
 
 class TaskController extends Controller
 {
+    public function actionDetail($task_id)
+    {
+        $model = TodoForm::findOne($task_id);
+        return $this->render('detail', ['model' => $model,]);
+    }
     public function actionCreatetask()
     {
         $model = new TodoForm();
 
         if (Yii::$app->request->isPost) {
-            $formdata = Yii::$app->request->post(); 
+            $formdata = Yii::$app->request->post();
 
             if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
                 $category = Category::find()->where(['id' => $formdata['TodoForm']['category']])->one();
-                
-                $isTodo = TodoForm::find()->where(['title'=>$formdata['TodoForm']['title']])->one(); 
-                if (empty($isTodo))
-                {
+
+                $isTodo = TodoForm::find()->where(['title' => $formdata['TodoForm']['title']])->one();
+                if (empty($isTodo)) {
                     $title = $formdata['TodoForm']['title'];
                     $loop = $formdata['TodoForm']['loop'];
 
                     $model = new TodoForm();
                     $model->title = $title;
+                    $model->description = $formdata['TodoForm']['description'];
                     $model->done = false;
                     $model->last_update = new Expression('NOW()');
                     $model->loop = $loop;
-                    $model->category_id = $category->id;  
+                    $model->category_id = $category->id;
                     $model->save(false);
-                    return $this->redirect(['task/createtask', ]);
+                    return $this->redirect(['task/createtask',]);
                 }
-             }
+            }
         }
 
         return $this->render('create', ['model' => $model,]);
@@ -49,29 +56,35 @@ class TaskController extends Controller
 
     public function actionDone()
     {
-        $selection=(array)Yii::$app->request->post('selection');
-        $model_redirect = TodoForm::findOne((int)$selection[0]);
+        $selection = (array) Yii::$app->request->post('selection');
+        $model_redirect = TodoForm::findOne((int) $selection[0]);
         $category_redirect = $model_redirect->category_id;
 
         $action = Yii::$app->request->post('action');
 
-        if ($action === 'Done')
-        {
-            foreach($selection as $id){
-                $model = TodoForm::findOne((int)$id);//make a typecasting
-                $category = Category::findOne((int)$model->category_id);
+        if ($action === 'Done') {
+            foreach ($selection as $id) {
+                $model = TodoForm::findOne((int) $id); //make a typecasting
+                $category = Category::findOne((int) $model->category_id);
                 $category->last_update = new Expression('NOW()');
                 $category->count = $category->count + 1;
-                $category->save(false); 
-    
-                //if loop == true, then create new task, else no
-                if ($model->loop == 1)
+                $category->save(false);
+                //Прверяем есть ли у категорий родительская категория, если есть увеличиваем ее.
+                if ($category->parent_id != 0 || $category->parent_id != null)
                 {
+                    $root_category = Category::findOne((int) $category->parent_id);
+                    $root_category->last_update = new Expression('NOW()');
+                    $root_category->count = $root_category->count + 1;
+                    $root_category->save(false);
+                }
+
+                //if loop == true, then create new task, else no
+                if ($model->loop == 1) {
                     $model->last_update = new Expression('NOW()');
                     $model->count = $model->count + 1;
                     $model->done = 1;
                     $model->save(false);
-                  
+
                     $newModel = new TodoForm();
                     $newModel->title = $model->title;
                     $newModel->count = $model->count;
@@ -83,110 +96,26 @@ class TaskController extends Controller
                     $newModel->category_id = $category->id;
                     $newModel->save(false);
 
-                    //Увеличиваем счетчик глобальной задачи, если есть.
-                    $global_task_list = GlobalTask::find()->all();                  
-                    foreach ($global_task_list as $value) 
-                    {
-                        $list_task = json_decode($value->json_task);
-                        $task1 = TodoForm::findOne((int)$list_task->id1);
-                        $task2 = TodoForm::findOne((int)$list_task->id2);
-                        $task3 = TodoForm::findOne((int)$list_task->id3);
-                        $task4 = TodoForm::findOne((int)$list_task->id4);
-                        $task5 = TodoForm::findOne((int)$list_task->id5);
-
-
-                        if (!is_null($task1))
-                        {
-                            if ($task1->title === $newModel->title)
-                            {
-                                if ($list_task->work1 < (int)$list_task->input1)
-                                {
-                                    $list_task->work1 += 1;
-                                    $new_json = json_encode($list_task);
-                                    $value->json_task = $new_json;
-                                    $value->save(false);
-                                    break;
-                                }
-                            }
-                        }
-                        if (!is_null($task2))
-                        {
-                            if ($task2->title === $newModel->title)
-                            {
-                                if ($list_task->work2 < (int)$list_task->input2)
-                                {
-                                    $list_task->work2 += 1;
-                                    $new_json = json_encode($list_task);
-                                    $value->json_task = $new_json;
-                                    $value->save(false);
-                                    break;
-                                }
-                            }
-                        }
-
-                        if (!is_null($task3))
-                        {
-                            if ($task3->title === $newModel->title)
-                            {
-                                if ($list_task->work3 < (int)$list_task->input3)
-                                {
-                                    $list_task->work3 += 1;
-                                    $new_json = json_encode($list_task);
-                                    $value->json_task = $new_json;
-                                    $value->save(false);
-                                    break;
-                                }
-                            }
-                        }
-
-                        if (!is_null($task4))
-                        {
-                            if ($task4->title === $newModel->title)
-                            {
-                                if ($list_task->work4 < (int)$list_task->input4)
-                                {
-                                    $list_task->work4 += 1;
-                                    $new_json = json_encode($list_task);
-                                    $value->json_task = $new_json;
-                                    $value->save(false);
-                                    break;
-                                }
-                            }
-                        }
-                        if (!is_null($task5))
-                        {
-                            if ($task5->title === $newModel->title)
-                            {
-                                if ($list_task->work5 < (int)$list_task->input5)
-                                {
-                                    $list_task->work5 += 1;
-                                    $new_json = json_encode($list_task);
-                                    $value->json_task = $new_json;
-                                    $value->save(false);
-                                    break;
-                                }
-                            }
-                        }                        
-                    }
-                }
-                else 
-                {
+                } else {
                     $model->last_update = new Expression('NOW()');
                     $model->count = $model->count + 1;
                     $model->done = 1;
                     $model->save(false);
                 }
-           }
+            }
         }
 
-        if ($action === 'Delete')
-        {
-            foreach($selection as $id)
-            {
-                $model = TodoForm::findOne((int)$id);
+        if ($action === 'Delete') {
+            foreach ($selection as $id) {
+                $model = TodoForm::findOne((int) $id);
                 $model->delete();
             }
         }
+
+        $statistic = TodoForm::find()->where('last_update >= CURDATE()')->andWhere(['=', 'done', '1'])->count();
+
+        $aim = 15 - (int) $statistic;
+        Yii::$app->session->setFlash('success', 'Осталось выполнить ' . $aim . ' задач');
 
         return $this->redirect(['category/view', 'id' => $category_redirect]);
     }
@@ -210,15 +139,15 @@ class TaskController extends Controller
         ]);
 
         return $this->render('warrning', [
-            'dataProvider' => $provider,            
+            'dataProvider' => $provider,
         ]);
     }
 
     public function actionStatdetailday($date)
     {
         $query = TodoForm::find()
-        ->andWhere(['like', 'last_update', $date ])
-        ->andWhere(['=', 'done', '1']);
+            ->andWhere(['like', 'last_update', $date])
+            ->andWhere(['=', 'done', '1']);
 
         $provider = new ActiveDataProvider([
             'query' => $query,
@@ -231,55 +160,67 @@ class TaskController extends Controller
             ],
         ]);
 
-        return $this->render('statdetailday',['dataProvider' => $provider,]);
+        return $this->render('statdetailday', ['dataProvider' => $provider,]);
     }
 
     public function actionDelete()
     {
-
     }
 
-    function date_sort($a, $b) {
+    function date_sort($a, $b)
+    {
         return strtotime($a) - strtotime($b);
     }
 
     public function actionStatistic()
     {
+        $year = date("Y");
+        $month = date("m");
+        $day = date("d");
+
+        $count_day = cal_days_in_month(CAL_GREGORIAN, $month, $year); // 31
+        $aim_task = $count_day * 15;
+        $aim_day_task = $day * 15; 
+        
         //last_update
         $statistic = TodoForm::find()
-        ->andWhere(['>', 'last_update', new Expression('LAST_DAY(CURDATE()) + INTERVAL 1 DAY - INTERVAL 1 MONTH') ])
-        ->andWhere(['<', 'last_update', new Expression('DATE_ADD(LAST_DAY(CURDATE()), INTERVAL 1 DAY)') ])
-        ->andWhere(['=', 'done', '1'])
-        ->asArray()->all();
+            ->andWhere(['>', 'last_update', new Expression('LAST_DAY(CURDATE()) + INTERVAL 1 DAY - INTERVAL 1 MONTH')])
+            ->andWhere(['<', 'last_update', new Expression('DATE_ADD(LAST_DAY(CURDATE()), INTERVAL 1 DAY)')])
+            ->andWhere(['=', 'done', '1'])->asArray()->all();
 
         $list_data = array();
-        foreach ($statistic as $value)
-        {
+        foreach ($statistic as $value) {
             $date = date('Y-m-d', strtotime($value['last_update']));
             $list_data[] = $date;
         }
 
-        usort($list_data, array($this,"date_sort"));
+        usort($list_data, array($this, "date_sort"));
 
         $data_raw = array_count_values($list_data);
         $result = [];
-        foreach ($data_raw as $key => $value)
-        {
+        $aim_total = 0;
+        foreach ($data_raw as $key => $value) {
             $result[] = ['data' => $key, 'count' => $value];
+            $aim_total += $value;
         }
-
+        $aimTask = 'Выполнено - ' . $aim_total . ' из ' . $aim_task;
+        $aimDayTask = 'Выполнено за текущие дни - ' . $aim_total . ' из ' . $aim_day_task;
         $provider = new ArrayDataProvider([
             'allModels' => $result,
             'pagination' => [
                 'pageSize' => 30,
             ],
             'sort' => [
-                'attributes' => ['data', ],
+                'attributes' => ['data',],
             ],
         ]);
-        
-        return $this->render('statistiс', ['dataProvider' => $provider,]);
+
+        return $this->render('statistiс', ['dataProvider' => $provider, 
+                                           'aimTask' => $aimTask,
+                                           'aimDayTask' => $aimDayTask,
+        ]);
     }
+
     public function actionVuetest()
     {
         return $this->render('vuetest');
@@ -301,17 +242,13 @@ class TaskController extends Controller
 
     public function beforeAction($action)
     {
-        if (!parent::beforeAction($action))
-        {
+        if (!parent::beforeAction($action)) {
             return false;
         }
 
-        if (!Yii::$app->user->isGuest)
-        {
+        if (!Yii::$app->user->isGuest) {
             return true;
-        }
-        else
-        {
+        } else {
             Yii::$app->getResponse()->redirect(Yii::$app->getHomeUrl());
             //для перестраховки вернем false
             return false;
@@ -326,5 +263,4 @@ class TaskController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-
 }

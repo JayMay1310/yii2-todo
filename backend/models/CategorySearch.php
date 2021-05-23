@@ -34,15 +34,19 @@ class CategorySearch extends Category
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
+    {   
         $query = Category::find()->orderBy(['last_update' => SORT_ASC]);
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
+
         $query->andFilterWhere(['like', 'title', $this->title]);
+       
         return $dataProvider;
     }
 }

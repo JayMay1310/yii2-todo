@@ -1,4 +1,5 @@
 <?php
+
 use yii\helpers\Html;
 use yii\grid\GridView;
 
@@ -7,20 +8,22 @@ use yii\grid\GridView;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 ?>
+    <div class="col-11">
+        <p><?= $aimTask ?></p>
+        <p><?= $aimDayTask ?></p>
+    </div>
 <div class="category-index">
-
-
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
             [
-                'label'=>'Data',
+                'label' => 'Data',
                 'format' => 'raw',
-                'value'=>function ($data) {
+                'value' => function ($data) {
                     return Html::a($data['data'], 'statdetailday?date=' . $data['data']);
                 },
-            ], 
-            'count', 
+            ],
+            'count',
         ],
     ]); ?>
 

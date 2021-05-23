@@ -18,7 +18,9 @@ use Yii;
  */
 class TodoForm extends \yii\db\ActiveRecord
 {
-    public function init() {
+
+    public function init()
+    {
         parent::init();
         if (is_null($this->max_bonus)) {
             $this->max_bonus = 0;
@@ -56,7 +58,7 @@ class TodoForm extends \yii\db\ActiveRecord
             'id' => 'ID',
             'category_id' => 'Category ID',
             'max_day' => 'Max Day',
-            'min_day' => 'Min Day', 
+            'min_day' => 'Min Day',
             'title' => 'Title',
             'status' => 'Status',
             'description' => 'Description',
@@ -67,6 +69,7 @@ class TodoForm extends \yii\db\ActiveRecord
             'max_bonus' => 'Count Bonus',
         ];
     }
+
 
     /**
      * @return \yii\db\ActiveQuery
